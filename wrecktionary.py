@@ -4,7 +4,7 @@ from forms import RegistrationForm, LoginForm
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '3fe68ef0176e0ea17ea3db319e2fc9cc'
-app.config['SQLAlchemy_DATASE_URI'] = 'sqlite:///site.db'
+app.config['SQLAlchemy_DATASE_URI'] = 'sqlite:///sqlite.db'
 
 posts=[
     {
