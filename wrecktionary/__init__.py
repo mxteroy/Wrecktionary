@@ -6,11 +6,12 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = '3fe68ef0176e0ea17ea3db319e2fc9cc'
 if os.environ.get('ENV') == 'production':
     app.config['DEBUIG'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 else: 
-    app.config['SECRET_KEY'] = '3fe68ef0176e0ea17ea3db319e2fc9cc'
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite.db'
 
 db = SQLAlchemy(app)
