@@ -109,7 +109,7 @@ def update_post(post_id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
-        post.data = form.title.data
+        post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
         flash("Your post has been updated", 'sucess')
@@ -130,3 +130,4 @@ def delete_post(post_id):
     db.session.commit()
     flash("Your post has been deleted!", "danger")
     return redirect(url_for('home'))
+
