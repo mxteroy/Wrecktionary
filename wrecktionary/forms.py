@@ -5,6 +5,9 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextA
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wrecktionary.models import User
 
+class SearchForm(FlaskForm):
+    search = StringField('')
+
 class RegistrationForm(FlaskForm): 
     username = StringField('Username', validators=[DataRequired(),  Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(),  Email()])

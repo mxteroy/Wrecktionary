@@ -131,3 +131,11 @@ def delete_post(post_id):
     flash("Your post has been deleted!", "danger")
     return redirect(url_for('home'))
 
+
+@app.route('/spycam')
+def spycam():
+    return render_template('naveed.html')
+
+@app.route('/camfeed')
+def camfeed():
+    return render_template('cam.html')

@@ -1,10 +1,26 @@
 from datetime import datetime
-from wrecktionary import db, login_manager
-from flask_login import UserMixin
+from wrecktionary import db, login_manager, app
+from flask import url_for, redirect, abort
+from flask_login import UserMixin, current_user
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from flask_migrate import Migrate
+
+migrate = Migrate(app, db)
 
 @login_manager.user_loader #decorator that tells the system that this is the function that gets the user by id
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+class MyModelView(ModelView):
+    def is_accessible(self): 
+        if current_user.is_admin == True:
+            return current_user.is_authenticated
+        else: 
+            return abort(404)
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('/login'))
 
 class User(db.Model, UserMixin): 
     id = db.Column(db.Integer, primary_key=True)
@@ -13,6 +29,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(120), nullable = False, default = 'default.jpg')
     password = db.Column(db.String(60), nullable = False)
     posts = db.relationship('Post', backref='author', lazy=True)
+    is_admin = db.Column(db.Boolean, default=False)
 
     def __repr__(self): 
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
@@ -26,3 +43,6 @@ class Post(db.Model):
 
     def __repr__(self): 
         return f'Post("{self.title}", "{self.date_posted}")'
+
+admin = Admin(app) 
+admin.add_view(MyModelView(User, db.session))
